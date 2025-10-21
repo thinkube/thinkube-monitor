@@ -4,7 +4,6 @@ metadata:
     createdAt: 0001-01-01T00:00:00Z
     updatedAt: 0001-01-01T00:00:00Z
     version: 0
-    project: gpu
 spec:
     display:
         name: NVIDIA DCGM Exporter Dashboard
@@ -119,4 +118,4 @@ spec:
                     - kind: TimeSeriesQuery
                       spec:
                         plugin:
-                            kind: PrometheusTimeSeriesQuer
+                            kind: PrometheusTimeSeriesQuery

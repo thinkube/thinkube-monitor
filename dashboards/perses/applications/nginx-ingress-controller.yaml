@@ -4,7 +4,6 @@ metadata:
     createdAt: 0001-01-01T00:00:00Z
     updatedAt: 0001-01-01T00:00:00Z
     version: 0
-    project: applications
 spec:
     display:
         name: NGINX Ingress Controller
@@ -222,9 +221,6 @@ spec:
                     kind: GaugeChart
                     spec:
                         calculation: last
-                        unit:
-                            kind: Decimal
-                            decimal_places: 3
                 queries:
                     - kind: TimeSeriesQuery
                       spec:
