@@ -50,6 +50,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"}
                                 seriesNameFormat: GPU {{gpu}}
@@ -68,6 +71,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: avg(DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"})
                                 seriesNameFormat: ""
@@ -85,6 +91,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"}
                                 seriesNameFormat: GPU {{gpu}}
@@ -103,6 +112,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"})
                                 seriesNameFormat: ""

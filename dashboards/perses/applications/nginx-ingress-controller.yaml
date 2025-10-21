@@ -87,6 +87,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
                                 seriesNameFormat: "{{ingress}}"
@@ -105,6 +108,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m]))
                                 seriesNameFormat: ""
@@ -122,6 +128,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}",status=~"[4-5].*"}[5m])) by (ingress, status)
                                 seriesNameFormat: "{{ingress}} - {{status}}"
@@ -141,6 +150,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}",status!~"[4-5].*"}[5m])) / sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) * 100
                                 seriesNameFormat: ""
@@ -158,6 +170,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(avg_over_time(nginx_ingress_controller_nginx_process_connections{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}[5m])) by (state)
                                 seriesNameFormat: "{{state}}"
@@ -176,6 +191,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(nginx_ingress_controller_nginx_process_connections{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"})
                                 seriesNameFormat: ""
@@ -193,6 +211,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
                                 seriesNameFormat: "p99 - {{ingress}}"
@@ -201,6 +222,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
                                 seriesNameFormat: "p95 - {{ingress}}"
@@ -209,6 +233,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: histogram_quantile(0.50, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
                                 seriesNameFormat: "p50 - {{ingress}}"
@@ -227,6 +254,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_request_duration_seconds_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) / sum(rate(nginx_ingress_controller_request_duration_seconds_count{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m]))
                                 seriesNameFormat: ""
@@ -244,6 +274,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_request_size_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
                                 seriesNameFormat: "{{ingress}}"
@@ -261,6 +294,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_response_size_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
                                 seriesNameFormat: "{{ingress}}"
@@ -278,6 +314,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: sum(rate(nginx_ingress_controller_config_last_reload_successful{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}[5m]))
                                 seriesNameFormat: "Successful"
@@ -297,6 +336,9 @@ spec:
                         plugin:
                             kind: PrometheusTimeSeriesQuery
                             spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
                                 minStep: ""
                                 query: nginx_ingress_controller_config_last_reload_successful{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}
                                 seriesNameFormat: ""
