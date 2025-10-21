@@ -20,6 +20,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: controller_namespace
             name: namespace
         - kind: ListVariable
@@ -34,6 +37,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: controller_class
             name: controller_class
         - kind: ListVariable
@@ -48,6 +54,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: controller
             name: controller
         - kind: ListVariable
@@ -62,6 +71,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: ingress
             name: ingress
     panels:

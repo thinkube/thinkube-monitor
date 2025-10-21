@@ -19,6 +19,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: instance
             name: instance
         - kind: ListVariable
@@ -32,6 +35,9 @@ spec:
             plugin:
                 kind: PrometheusLabelValuesVariable
                 spec:
+                    datasource:
+                        kind: PrometheusDatasource
+                        name: prometheus-datasource
                     labelName: gpu
             name: gpu
     panels:
