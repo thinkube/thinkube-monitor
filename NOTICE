@@ -25,4 +25,6 @@ The following dashboards are original Thinkube contributions:
   - applications/nginx-ingress-controller.yaml (custom dashboard)
 
 The following dashboards are migrated from Grafana.com:
-  - gpu/nvidia-dcgm-exporter.yaml (originally Grafana Dashboard #12239)
+  - gpu/nvidia-dcgm-exporter.yaml (migrated from Grafana Dashboard #12239)
+    Source: https://github.com/NVIDIA/dcgm-exporter/blob/main/grafana/dcgm-exporter-dashboard.json
+    8 panels: GPU Temperature, GPU Power, GPU SM Clocks, GPU Utilization, Framebuffer Memory, Tensor Core Utilization
