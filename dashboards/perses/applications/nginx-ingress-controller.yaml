@@ -21,8 +21,6 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: controller_namespace
-                    matchers:
-                        - "nginx_ingress_controller_config_hash{}"
             name: namespace
         - kind: ListVariable
           spec:
@@ -37,8 +35,6 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: controller_class
-                    matchers:
-                        - "nginx_ingress_controller_config_hash{}"
             name: controller_class
         - kind: ListVariable
           spec:
@@ -53,8 +49,6 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: controller
-                    matchers:
-                        - "nginx_ingress_controller_config_hash{}"
             name: controller
         - kind: ListVariable
           spec:
@@ -69,8 +63,6 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: ingress
-                    matchers:
-                        - "nginx_ingress_controller_requests{}"
             name: ingress
     panels:
         "0":
