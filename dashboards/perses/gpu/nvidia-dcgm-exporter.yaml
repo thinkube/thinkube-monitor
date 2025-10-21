@@ -23,6 +23,7 @@ spec:
                         kind: PrometheusDatasource
                         name: prometheus-datasource
                     labelName: instance
+                    matchers: []
             name: instance
         - kind: ListVariable
           spec:
@@ -39,6 +40,7 @@ spec:
                         kind: PrometheusDatasource
                         name: prometheus-datasource
                     labelName: gpu
+                    matchers: []
             name: gpu
     panels:
         "0":
