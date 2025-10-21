@@ -21,7 +21,7 @@ spec:
                 spec:
                     labelName: instance
                     matchers:
-                        - DCGM_FI_DEV_GPU_TEMP
+                        - "DCGM_FI_DEV_GPU_TEMP{}"
             name: instance
         - kind: ListVariable
           spec:
