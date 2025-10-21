@@ -20,6 +20,8 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: instance
+                    matchers:
+                        - DCGM_FI_DEV_GPU_TEMP
             name: instance
         - kind: ListVariable
           spec:
@@ -33,6 +35,8 @@ spec:
                 kind: PrometheusLabelValuesVariable
                 spec:
                     labelName: gpu
+                    matchers:
+                        - DCGM_FI_DEV_GPU_TEMP
             name: gpu
     panels:
         "0":
