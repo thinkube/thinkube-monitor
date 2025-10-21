@@ -1,0 +1,28 @@
+Thinkube Monitor
+Copyright 2025 Thinkube Contributors
+
+This product includes software developed by the Perses project
+(https://perses.dev) and the Perses community.
+
+This repository contains modified versions of dashboards originally from:
+  - Perses Community Dashboards (https://github.com/perses/community-dashboards)
+    Copyright 2024 The Perses Authors
+    Licensed under Apache License 2.0
+
+Modifications made for Thinkube:
+  - Removed cluster variable requirements for single-cluster deployments
+  - Simplified PromQL queries (removed cluster label filters)
+  - Added custom dashboards (NGINX Ingress Controller)
+  - Migrated dashboards from Grafana (NVIDIA DCGM Exporter)
+
+The following dashboards are derived from Perses Community Dashboards:
+  - kubernetes/* (18 dashboards)
+  - node-exporter/* (2 dashboards)
+  - prometheus/* (2 dashboards)
+  - alertmanager/* (1 dashboard)
+
+The following dashboards are original Thinkube contributions:
+  - applications/nginx-ingress-controller.yaml (custom dashboard)
+
+The following dashboards are migrated from Grafana.com:
+  - gpu/nvidia-dcgm-exporter.yaml (originally Grafana Dashboard #12239)
