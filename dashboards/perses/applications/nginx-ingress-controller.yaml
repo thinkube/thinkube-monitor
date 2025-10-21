@@ -1,0 +1,306 @@
+kind: Dashboard
+metadata:
+    name: nginx-ingress
+    createdAt: 0001-01-01T00:00:00Z
+    updatedAt: 0001-01-01T00:00:00Z
+    version: 0
+    project: applications
+spec:
+    display:
+        name: NGINX Ingress Controller
+    variables:
+        - kind: ListVariable
+          spec:
+            display:
+                name: Namespace
+                hidden: false
+            allowAllValue: true
+            allowMultiple: false
+            customAllValue: .*
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: controller_namespace
+                    matchers:
+                        - nginx_ingress_controller_config_hash
+            name: namespace
+        - kind: ListVariable
+          spec:
+            display:
+                name: Controller Class
+                hidden: false
+            allowAllValue: true
+            allowMultiple: false
+            customAllValue: .*
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: controller_class
+                    matchers:
+                        - nginx_ingress_controller_config_hash
+            name: controller_class
+        - kind: ListVariable
+          spec:
+            display:
+                name: Controller
+                hidden: false
+            allowAllValue: true
+            allowMultiple: false
+            customAllValue: .*
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: controller
+                    matchers:
+                        - nginx_ingress_controller_config_hash
+            name: controller
+        - kind: ListVariable
+          spec:
+            display:
+                name: Ingress
+                hidden: false
+            allowAllValue: true
+            allowMultiple: false
+            customAllValue: .*
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: ingress
+                    matchers:
+                        - nginx_ingress_controller_requests
+            name: ingress
+    panels:
+        "0":
+            kind: Panel
+            spec:
+                display:
+                    name: Request Rate (req/s)
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
+                                seriesNameFormat: "{{ingress}}"
+        "1":
+            kind: Panel
+            spec:
+                display:
+                    name: Total Requests/sec
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m]))
+                                seriesNameFormat: ""
+        "2":
+            kind: Panel
+            spec:
+                display:
+                    name: Error Rate (4xx + 5xx)
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}",status=~"[4-5].*"}[5m])) by (ingress, status)
+                                seriesNameFormat: "{{ingress}} - {{status}}"
+        "3":
+            kind: Panel
+            spec:
+                display:
+                    name: Success Rate %
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                        max: 100
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}",status!~"[4-5].*"}[5m])) / sum(rate(nginx_ingress_controller_requests{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) * 100
+                                seriesNameFormat: ""
+        "4":
+            kind: Panel
+            spec:
+                display:
+                    name: Active Connections
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(avg_over_time(nginx_ingress_controller_nginx_process_connections{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}[5m])) by (state)
+                                seriesNameFormat: "{{state}}"
+        "5":
+            kind: Panel
+            spec:
+                display:
+                    name: Total Connections
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(nginx_ingress_controller_nginx_process_connections{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"})
+                                seriesNameFormat: ""
+        "6":
+            kind: Panel
+            spec:
+                display:
+                    name: Request Duration (seconds)
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
+                                seriesNameFormat: "p99 - {{ingress}}"
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
+                                seriesNameFormat: "p95 - {{ingress}}"
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: histogram_quantile(0.50, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress, le))
+                                seriesNameFormat: "p50 - {{ingress}}"
+        "7":
+            kind: Panel
+            spec:
+                display:
+                    name: Avg Request Duration
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                        unit:
+                            kind: Decimal
+                            decimal_places: 3
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_request_duration_seconds_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) / sum(rate(nginx_ingress_controller_request_duration_seconds_count{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m]))
+                                seriesNameFormat: ""
+        "8":
+            kind: Panel
+            spec:
+                display:
+                    name: Ingress Bytes In
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_request_size_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
+                                seriesNameFormat: "{{ingress}}"
+        "9":
+            kind: Panel
+            spec:
+                display:
+                    name: Ingress Bytes Out
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_response_size_sum{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}",ingress=~"${ingress}"}[5m])) by (ingress)
+                                seriesNameFormat: "{{ingress}}"
+        "10":
+            kind: Panel
+            spec:
+                display:
+                    name: Config Reloads
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(rate(nginx_ingress_controller_config_last_reload_successful{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}[5m]))
+                                seriesNameFormat: "Successful"
+        "11":
+            kind: Panel
+            spec:
+                display:
+                    name: Last Config Reload Success
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                        max: 1
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: nginx_ingress_controller_config_last_reload_successful{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}
+                                seriesNameFormat: ""

@@ -34,7 +34,7 @@ This repository contains Perses dashboards adapted from the [Perses Community Da
 - **AlertManager Overview**: Alert routing and notification metrics
 
 ### Applications (2 dashboards)
-- **NGINX Ingress Controller**: Ingress traffic and performance
+- **NGINX Ingress Controller**: Custom dashboard with request rates, errors, connections, latency, bandwidth
 - **Custom Applications**: (placeholder for additional apps)
 
 ### GPU Monitoring (1 dashboard)
@@ -75,7 +75,7 @@ The deployment playbook clones this repository and imports all dashboards using 
 ## Dashboard Sources
 
 - **Kubernetes, Node Exporter, Prometheus, AlertManager**: Modified from [perses/community-dashboards](https://github.com/perses/community-dashboards)
-- **NGINX Ingress**: Migrated from [Grafana Dashboard 9614](https://grafana.com/grafana/dashboards/9614)
+- **NGINX Ingress**: Custom dashboard created for Thinkube (based on NGINX Ingress Controller metrics)
 - **NVIDIA DCGM**: Migrated from [Grafana Dashboard 12239](https://grafana.com/grafana/dashboards/12239)
 
 ## Contributing

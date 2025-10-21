@@ -1,0 +1,122 @@
+kind: Dashboard
+metadata:
+    name: Oxed_c6Wz
+    createdAt: 0001-01-01T00:00:00Z
+    updatedAt: 0001-01-01T00:00:00Z
+    version: 0
+    project: gpu
+spec:
+    display:
+        name: NVIDIA DCGM Exporter Dashboard
+    variables:
+        - kind: ListVariable
+          spec:
+            display:
+                hidden: false
+            allowAllValue: false
+            allowMultiple: true
+            sort: none
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: instance
+                    matchers:
+                        - DCGM_FI_DEV_GPU_TEMP
+            name: instance
+        - kind: ListVariable
+          spec:
+            display:
+                hidden: false
+            allowAllValue: true
+            allowMultiple: true
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: gpu
+                    matchers: []
+            name: gpu
+    panels:
+        "0":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Temperature
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: GPU {{gpu}}
+        "1":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Avg. Temp
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: avg(DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"})
+                                seriesNameFormat: ""
+        "2":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Power Usage
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: GPU {{gpu}}
+        "3":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Power Total
+                plugin:
+                    kind: GaugeChart
+                    spec:
+                        calculation: last
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                minStep: ""
+                                query: sum(DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"})
+                                seriesNameFormat: ""
+        "4":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU SM Clocks
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuer
