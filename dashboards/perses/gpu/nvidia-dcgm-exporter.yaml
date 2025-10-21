@@ -197,3 +197,57 @@ spec:
                                 minStep: ""
                                 query: DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{instance=~"${instance}", gpu=~"${gpu}"}
                                 seriesNameFormat: GPU {{gpu}}
+    layouts:
+        - kind: Grid
+          spec:
+            display:
+                title: GPU Metrics
+            items:
+                - x: 0
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/0'
+                - x: 12
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/1'
+                - x: 0
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/2'
+                - x: 12
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/3'
+                - x: 0
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/4'
+                - x: 12
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/5'
+                - x: 0
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/6'
+                - x: 12
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/7'

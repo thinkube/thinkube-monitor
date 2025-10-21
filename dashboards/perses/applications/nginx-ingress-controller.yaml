@@ -334,3 +334,81 @@ spec:
                                 minStep: ""
                                 query: nginx_ingress_controller_config_last_reload_successful{controller_namespace=~"${namespace}",controller_class=~"${controller_class}",controller=~"${controller}"}
                                 seriesNameFormat: ""
+    layouts:
+        - kind: Grid
+          spec:
+            display:
+                title: NGINX Ingress Controller Metrics
+            items:
+                - x: 0
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/0'
+                - x: 12
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/1'
+                - x: 0
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/2'
+                - x: 12
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/3'
+                - x: 0
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/4'
+                - x: 12
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/5'
+                - x: 0
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/6'
+                - x: 12
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/7'
+                - x: 0
+                  "y": 24
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/8'
+                - x: 12
+                  "y": 24
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/9'
+                - x: 0
+                  "y": 30
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/10'
+                - x: 12
+                  "y": 30
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/11'
