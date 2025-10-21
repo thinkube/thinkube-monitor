@@ -11,6 +11,7 @@ spec:
         - kind: ListVariable
           spec:
             display:
+                name: Instance
                 hidden: false
             allowAllValue: false
             allowMultiple: true
@@ -25,6 +26,7 @@ spec:
         - kind: ListVariable
           spec:
             display:
+                name: GPU
                 hidden: false
             allowAllValue: true
             allowMultiple: true
