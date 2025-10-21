@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Alertmanager / Overview
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: job
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: job
-                    matchers:
-                        - alertmanager_alerts{}
-            name: job
-        - kind: ListVariable
-          spec:
-            display:
-                name: integration
-                hidden: false
-            allowAllValue: true
-            allowMultiple: true
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: integration
-                    matchers:
-                        - alertmanager_notifications_total{job="$job"}
-            name: integration
     panels:
         "0_0":
             kind: Panel

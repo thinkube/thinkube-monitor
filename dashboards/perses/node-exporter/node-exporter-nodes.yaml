@@ -8,24 +8,6 @@ metadata:
 spec:
     display:
         name: Node Exporter / Nodes
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: instance
-                hidden: false
-            allowAllValue: true
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: instance
-                    matchers:
-                        - node_uname_info{job="node",sysname!="Darwin"}
-            name: instance
     panels:
         "0_0":
             kind: Panel

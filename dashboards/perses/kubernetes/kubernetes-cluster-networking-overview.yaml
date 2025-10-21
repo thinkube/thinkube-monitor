@@ -8,24 +8,6 @@ metadata:
 spec:
     display:
         name: Kubernetes / Networking / Cluster
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: cluster
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: cluster
-                    matchers:
-                        - up{job="kubelet", metrics_path="/metrics/cadvisor"}
-            name: cluster
     panels:
         "0_0":
             kind: Panel
@@ -60,7 +42,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -101,7 +83,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -178,7 +160,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -195,7 +177,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -212,7 +194,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     avg by (namespace) (
-                                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -229,7 +211,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     avg by (namespace) (
-                                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -246,7 +228,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_packets_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -263,7 +245,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_packets_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -280,7 +262,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_packets_dropped_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -297,7 +279,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_packets_dropped_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -337,7 +319,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     avg by (namespace) (
-                                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -378,7 +360,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     avg by (namespace) (
-                                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -419,7 +401,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -460,7 +442,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_bytes_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -501,7 +483,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_packets_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -542,7 +524,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_packets_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -583,7 +565,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_receive_packets_dropped_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -624,7 +606,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (namespace) (
-                                        rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                                        rate(container_network_transmit_packets_dropped_total{namespace!=""}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -665,9 +647,9 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (instance) (
-                                          rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval])
+                                          rate(node_netstat_Tcp_RetransSegs{}[$__rate_interval])
                                         /
-                                          rate(node_netstat_Tcp_OutSegs{cluster="$cluster"}[$__rate_interval])
+                                          rate(node_netstat_Tcp_OutSegs{}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,
@@ -708,9 +690,9 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (instance) (
-                                          rate(node_netstat_TcpExt_TCPSynRetrans{cluster="$cluster"}[$__rate_interval])
+                                          rate(node_netstat_TcpExt_TCPSynRetrans{}[$__rate_interval])
                                         /
-                                          rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval])
+                                          rate(node_netstat_Tcp_RetransSegs{}[$__rate_interval])
                                       * on (cluster, namespace, pod) group_left ()
                                         topk by (cluster, namespace, pod) (
                                           1,

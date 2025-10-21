@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Prometheus / Overview
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: job
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: job
-                    matchers:
-                        - prometheus_build_info{}
-            name: job
-        - kind: ListVariable
-          spec:
-            display:
-                name: instance
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: instance
-                    matchers:
-                        - prometheus_build_info{job="$job"}
-            name: instance
     panels:
         "0_0":
             kind: Panel

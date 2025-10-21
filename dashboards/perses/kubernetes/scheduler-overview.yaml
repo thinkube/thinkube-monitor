@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Kubernetes / Scheduler
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: cluster
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: cluster
-                    matchers:
-                        - up{job="kube-scheduler"}
-            name: cluster
-        - kind: ListVariable
-          spec:
-            display:
-                name: instance
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: instance
-                    matchers:
-                        - up{cluster="$cluster",job="kube-scheduler"}
-            name: instance
     panels:
         "0_0":
             kind: Panel
@@ -66,7 +31,7 @@ spec:
                                 datasource:
                                     kind: PrometheusDatasource
                                     name: prometheus-datasource
-                                query: sum(up{cluster="$cluster",job="kube-scheduler"})
+                                query: sum(up{job="kube-scheduler"})
         "1_0":
             kind: Panel
             spec:
@@ -101,7 +66,7 @@ spec:
                                 query: |-
                                     sum by (cluster, instance) (
                                       rate(
-                                        scheduler_e2e_scheduling_duration_seconds_count{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                        scheduler_e2e_scheduling_duration_seconds_count{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                       )
                                     )
                                 seriesNameFormat: '{{cluster}} {{instance}} e2e'
@@ -116,7 +81,7 @@ spec:
                                 query: |-
                                     sum by (cluster, instance) (
                                       rate(
-                                        scheduler_binding_duration_seconds_count{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                        scheduler_binding_duration_seconds_count{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                       )
                                     )
                                 seriesNameFormat: '{{cluster}} {{instance}} binding'
@@ -131,7 +96,7 @@ spec:
                                 query: |-
                                     sum by (cluster, instance) (
                                       rate(
-                                        scheduler_scheduling_algorithm_duration_seconds_count{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                        scheduler_scheduling_algorithm_duration_seconds_count{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                       )
                                     )
                                 seriesNameFormat: '{{cluster}} {{instance}} scheduling algorithm'
@@ -146,7 +111,7 @@ spec:
                                 query: |-
                                     sum by (cluster, instance) (
                                       rate(
-                                        scheduler_volume_scheduling_duration_seconds_count{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                        scheduler_volume_scheduling_duration_seconds_count{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                       )
                                     )
                                 seriesNameFormat: '{{cluster}} {{instance}} volume'
@@ -186,7 +151,7 @@ spec:
                                       0.99,
                                       sum by (cluster, instance, le) (
                                         rate(
-                                          scheduler_e2e_scheduling_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                          scheduler_e2e_scheduling_duration_seconds_bucket{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                         )
                                       )
                                     )
@@ -204,7 +169,7 @@ spec:
                                       0.99,
                                       sum by (cluster, instance, le) (
                                         rate(
-                                          scheduler_binding_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                          scheduler_binding_duration_seconds_bucket{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                         )
                                       )
                                     )
@@ -222,7 +187,7 @@ spec:
                                       0.99,
                                       sum by (cluster, instance, le) (
                                         rate(
-                                          scheduler_scheduling_algorithm_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                          scheduler_scheduling_algorithm_duration_seconds_bucket{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                         )
                                       )
                                     )
@@ -240,7 +205,7 @@ spec:
                                       0.99,
                                       sum by (cluster, instance, le) (
                                         rate(
-                                          scheduler_volume_scheduling_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
+                                          scheduler_volume_scheduling_duration_seconds_bucket{instance=~"$instance",job="kube-scheduler"}[$__rate_interval]
                                         )
                                       )
                                     )

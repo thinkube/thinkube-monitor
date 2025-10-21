@@ -19,56 +19,64 @@ find "$DASHBOARD_DIR" -name "*.yaml" -type f | while read -r dashboard; do
     # Create backup
     cp "$dashboard" "$dashboard.bak"
 
-    # Remove cluster variable definition (between 'kind: ListVariable' and next variable or 'panels:')
-    # This is a complex sed operation, so we'll use python for more reliable processing
-    python3 << 'EOF' "$dashboard"
-import sys
-import yaml
+    # Remove cluster variable block (from '- kind: ListVariable' with name: cluster to next variable or panels section)
+    # Use awk for more reliable processing
+    awk '
+    BEGIN { in_cluster_var = 0; indent_level = 0 }
 
-dashboard_file = sys.argv[1]
+    # Detect start of cluster variable
+    /kind: ListVariable/ {
+        # Check if next few lines contain name: cluster
+        getline next_line
+        if (next_line ~ /name: cluster/) {
+            in_cluster_var = 1
+            # Store the indentation level (number of leading spaces before "- kind")
+            match($0, /^[[:space:]]*/)
+            indent_level = RLENGTH
+            next
+        } else {
+            # Not cluster variable, print both lines
+            print
+            print next_line
+            next
+        }
+    }
 
-with open(dashboard_file, 'r') as f:
-    dashboard = yaml.safe_load(f)
+    # Skip lines while in cluster variable block
+    in_cluster_var == 1 {
+        # Check if we reached next variable or panels section (same or less indentation with "- " or different section)
+        if (/^[[:space:]]*-[[:space:]]/ && match($0, /^[[:space:]]*/) <= indent_level) {
+            # Reached next variable, stop skipping
+            in_cluster_var = 0
+            print
+        } else if (/^[[:space:]]*panels:/ || /^[[:space:]]*[a-z]+:/) {
+            # Reached panels or another top-level section
+            in_cluster_var = 0
+            print
+        }
+        # Otherwise skip the line (still in cluster variable block)
+        next
+    }
 
-# Remove cluster variable if it exists
-if 'spec' in dashboard and 'variables' in dashboard['spec']:
-    dashboard['spec']['variables'] = [
-        var for var in dashboard['spec']['variables']
-        if not (var.get('kind') == 'ListVariable' and var.get('name') == 'cluster')
-    ]
-
-# Function to recursively remove cluster filters from queries
-def remove_cluster_filter(obj):
-    if isinstance(obj, dict):
-        # If this is a query string, remove cluster filter
-        if 'query' in obj and isinstance(obj['query'], str):
-            # Remove {cluster="$cluster"} and cluster="$cluster" from queries
-            obj['query'] = obj['query'].replace('{cluster="$cluster"}', '')
-            obj['query'] = obj['query'].replace(',cluster="$cluster"', '')
-            obj['query'] = obj['query'].replace('cluster="$cluster",', '')
-            obj['query'] = obj['query'].replace('cluster="$cluster"', '')
-            # Clean up empty braces
-            obj['query'] = obj['query'].replace('{}', '')
-        # Recurse into nested dictionaries
-        for key, value in obj.items():
-            obj[key] = remove_cluster_filter(value)
-    elif isinstance(obj, list):
-        # Recurse into lists
-        return [remove_cluster_filter(item) for item in obj]
-    return obj
-
-# Remove cluster filters from all queries
-dashboard = remove_cluster_filter(dashboard)
-
-# Write back
-with open(dashboard_file, 'w') as f:
-    yaml.dump(dashboard, f, default_flow_style=False, sort_keys=False)
-
-print(f"✓ Processed {dashboard_file}")
-EOF
+    # Print all other lines, removing cluster filters from queries
+    {
+        # Remove cluster="$cluster" filters from query strings
+        gsub(/,cluster="\$cluster"/, "")
+        gsub(/cluster="\$cluster",/, "")
+        gsub(/cluster="\$cluster"/, "")
+        gsub(/\{cluster="\$cluster"\}/, "")
+        print
+    }
+    ' "$dashboard.bak" > "$dashboard"
 
     # Remove backup if successful
-    rm "$dashboard.bak"
+    if [ -f "$dashboard" ]; then
+        rm "$dashboard.bak"
+        echo "✓ Processed $(basename $dashboard)"
+    else
+        echo "✗ Failed to process $(basename $dashboard)"
+        mv "$dashboard.bak" "$dashboard"
+    fi
 done
 
 echo "============================================================"

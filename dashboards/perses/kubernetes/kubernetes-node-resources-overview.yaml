@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Kubernetes / Compute Resources / Node (Pods)
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: cluster
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: cluster
-                    matchers:
-                        - up{job="kubelet", metrics_path="/metrics/cadvisor"}
-            name: cluster
-        - kind: ListVariable
-          spec:
-            display:
-                name: node
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: node
-                    matchers:
-                        - kube_pod_info{cluster="$cluster"}
-            name: node
     panels:
         "0_0":
             kind: Panel
@@ -77,7 +42,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum(
-                                      kube_node_status_capacity{cluster="$cluster",job="kube-state-metrics",node=~"$node",resource="cpu"}
+                                      kube_node_status_capacity{job="kube-state-metrics",node=~"$node",resource="cpu"}
                                     )
                                 seriesNameFormat: max capacity
                     - kind: TimeSeriesQuery
@@ -90,7 +55,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",node=~"$node"}
+                                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=~"$node"}
                                     )
                                 seriesNameFormat: '{{pod}}'
         "1_0":
@@ -152,7 +117,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",node=~"$node"}
+                                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -164,7 +129,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster="$cluster",node=~"$node"}
+                                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -176,11 +141,11 @@ spec:
                                     name: prometheus-datasource
                                 query: |4-
                                       sum by (pod) (
-                                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",node=~"$node"}
+                                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=~"$node"}
                                       )
                                     /
                                       sum by (pod) (
-                                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster="$cluster",node=~"$node"}
+                                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{node=~"$node"}
                                       )
                     - kind: TimeSeriesQuery
                       spec:
@@ -192,7 +157,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster="$cluster",node=~"$node"}
+                                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -204,11 +169,11 @@ spec:
                                     name: prometheus-datasource
                                 query: |4-
                                       sum by (pod) (
-                                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",node=~"$node"}
+                                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=~"$node"}
                                       )
                                     /
                                       sum by (pod) (
-                                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster="$cluster",node=~"$node"}
+                                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{node=~"$node"}
                                       )
         "2_0":
             kind: Panel
@@ -243,7 +208,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum(
-                                      kube_node_status_capacity{cluster="$cluster",job="kube-state-metrics",node=~"$node",resource="memory"}
+                                      kube_node_status_capacity{job="kube-state-metrics",node=~"$node",resource="memory"}
                                     )
                                 seriesNameFormat: max capacity
                     - kind: TimeSeriesQuery
@@ -256,7 +221,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_working_set_bytes{cluster="$cluster",container!="",node=~"$node"}
+                                      node_namespace_pod_container:container_memory_working_set_bytes{container!="",node=~"$node"}
                                     )
                                 seriesNameFormat: '{{pod}}'
         "3_0":
@@ -292,7 +257,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum(
-                                      kube_node_status_capacity{cluster="$cluster",job="kube-state-metrics",node=~"$node",resource="memory"}
+                                      kube_node_status_capacity{job="kube-state-metrics",node=~"$node",resource="memory"}
                                     )
                                 seriesNameFormat: max capacity
                     - kind: TimeSeriesQuery
@@ -305,7 +270,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_rss{cluster="$cluster",container!="",node=~"$node"}
+                                      node_namespace_pod_container:container_memory_rss{container!="",node=~"$node"}
                                     )
                                 seriesNameFormat: '{{pod}}'
         "4_0":
@@ -379,7 +344,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_working_set_bytes{cluster="$cluster",container!="",node=~"$node"}
+                                      node_namespace_pod_container:container_memory_working_set_bytes{container!="",node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -391,35 +356,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster="$cluster",node=~"$node"}
-                                    )
-                    - kind: TimeSeriesQuery
-                      spec:
-                        plugin:
-                            kind: PrometheusTimeSeriesQuery
-                            spec:
-                                datasource:
-                                    kind: PrometheusDatasource
-                                    name: prometheus-datasource
-                                query: |4-
-                                      sum by (pod) (
-                                        node_namespace_pod_container:container_memory_working_set_bytes{cluster="$cluster",container!="",node=~"$node"}
-                                      )
-                                    /
-                                      sum by (pod) (
-                                        cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster="$cluster",node=~"$node"}
-                                      )
-                    - kind: TimeSeriesQuery
-                      spec:
-                        plugin:
-                            kind: PrometheusTimeSeriesQuery
-                            spec:
-                                datasource:
-                                    kind: PrometheusDatasource
-                                    name: prometheus-datasource
-                                query: |-
-                                    sum by (pod) (
-                                      cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster="$cluster",node=~"$node"}
+                                      cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -431,11 +368,11 @@ spec:
                                     name: prometheus-datasource
                                 query: |4-
                                       sum by (pod) (
-                                        node_namespace_pod_container:container_memory_working_set_bytes{cluster="$cluster",container!="",node=~"$node"}
+                                        node_namespace_pod_container:container_memory_working_set_bytes{container!="",node=~"$node"}
                                       )
                                     /
                                       sum by (pod) (
-                                        cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster="$cluster",node=~"$node"}
+                                        cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{node=~"$node"}
                                       )
                     - kind: TimeSeriesQuery
                       spec:
@@ -447,7 +384,35 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_rss{cluster="$cluster",container!="",node=~"$node"}
+                                      cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{node=~"$node"}
+                                    )
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                query: |4-
+                                      sum by (pod) (
+                                        node_namespace_pod_container:container_memory_working_set_bytes{container!="",node=~"$node"}
+                                      )
+                                    /
+                                      sum by (pod) (
+                                        cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{node=~"$node"}
+                                      )
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                query: |-
+                                    sum by (pod) (
+                                      node_namespace_pod_container:container_memory_rss{container!="",node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -459,7 +424,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_cache{cluster="$cluster",container!="",node=~"$node"}
+                                      node_namespace_pod_container:container_memory_cache{container!="",node=~"$node"}
                                     )
                     - kind: TimeSeriesQuery
                       spec:
@@ -471,7 +436,7 @@ spec:
                                     name: prometheus-datasource
                                 query: |-
                                     sum by (pod) (
-                                      node_namespace_pod_container:container_memory_swap{cluster="$cluster",container!="",node=~"$node"}
+                                      node_namespace_pod_container:container_memory_swap{container!="",node=~"$node"}
                                     )
     layouts:
         - kind: Grid

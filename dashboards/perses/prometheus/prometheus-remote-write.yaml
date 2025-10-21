@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Prometheus / Remote Write
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: instance
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: instance
-                    matchers:
-                        - prometheus_remote_storage_shards{}
-            name: instance
-        - kind: ListVariable
-          spec:
-            display:
-                name: url
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: url
-                    matchers:
-                        - prometheus_remote_storage_shards{instance="$instance"}
-            name: url
     panels:
         "0_0":
             kind: Panel

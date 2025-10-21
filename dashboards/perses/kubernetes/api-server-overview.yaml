@@ -8,41 +8,6 @@ metadata:
 spec:
     display:
         name: Kubernetes / API server
-    variables:
-        - kind: ListVariable
-          spec:
-            display:
-                name: cluster
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: cluster
-                    matchers:
-                        - up{job="kube-apiserver"}
-            name: cluster
-        - kind: ListVariable
-          spec:
-            display:
-                name: instance
-                hidden: false
-            allowAllValue: false
-            allowMultiple: false
-            plugin:
-                kind: PrometheusLabelValuesVariable
-                spec:
-                    datasource:
-                        kind: PrometheusDatasource
-                        name: prometheus-datasource
-                    labelName: instance
-                    matchers:
-                        - up{cluster="$cluster",job="kube-apiserver"}
-            name: instance
     panels:
         "0_0":
             kind: Panel
@@ -478,7 +443,7 @@ spec:
                                       0.99,
                                       sum by (instance, name, le) (
                                         rate(
-                                          workqueue_queue_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                                          workqueue_queue_duration_seconds_bucket{instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
                                         )
                                       )
                                     )
