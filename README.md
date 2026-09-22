@@ -1,10 +1,31 @@
-# Thinkube Monitor
+# thinkube-monitor
 
-Curated collection of monitoring dashboards for the Thinkube platform, optimized for single-cluster Kubernetes deployments.
+The 25 Perses dashboards that Thinkube imports when Perses is installed.
 
-## Overview
+## What it does
 
-This repository contains Perses dashboards adapted from the [Perses Community Dashboards](https://github.com/perses/community-dashboards) project and custom dashboards for Thinkube-specific services.
+- Holds 25 Perses dashboards as YAML files under `dashboards/perses/`, one
+  folder per category: Kubernetes, Node Exporter, Prometheus,
+  AlertManager, applications and GPU.
+- The dashboards read metrics from the platform's Prometheus.
+- 23 dashboards are adapted from
+  [perses/community-dashboards](https://github.com/perses/community-dashboards)
+  for a single cluster. One (NGINX Ingress Controller) is written for
+  Thinkube. One (NVIDIA DCGM) is migrated from Grafana.
+- `source-grafana/` keeps the original Grafana JSON of the NGINX Ingress
+  and NVIDIA DCGM dashboards.
+- `scripts/remove-cluster-variable.sh` removes the `cluster` variable from
+  the dashboards in a folder.
+
+## How it reaches a user
+
+It is data read by the Perses optional component. When Perses is installed
+from the Optional Components page in thinkube-control, the playbook
+`ansible/40_thinkube/optional/perses/14_import_dashboards_percli.yaml` in
+[thinkube](https://github.com/thinkube/thinkube) clones this repository
+(branch `main`) and imports every dashboard folder with `percli apply`.
+Each folder becomes a Perses project of the same name, with a Prometheus
+datasource. The repository is not installed on its own.
 
 ## Dashboard Categories
 
@@ -33,20 +54,23 @@ This repository contains Perses dashboards adapted from the [Perses Community Da
 ### AlertManager (1 dashboard)
 - **AlertManager Overview**: Alert routing and notification metrics
 
-### Applications (2 dashboards)
-- **NGINX Ingress Controller**: Custom dashboard with request rates, errors, connections, latency, bandwidth
-- **Custom Applications**: (placeholder for additional apps)
+### Applications (1 dashboard)
+- **NGINX Ingress Controller**: Custom dashboard with request rates, errors, connections, latency, bandwidth and configuration reloads
 
 ### GPU Monitoring (1 dashboard)
-- **NVIDIA DCGM**: GPU utilization, temperature, power
+- **NVIDIA DCGM**: GPU temperature, power, SM clocks, utilization, framebuffer memory and Tensor Core utilization (8 panels)
 
 ## Modifications from Upstream
 
-All dashboards in this collection have been modified for single-cluster deployments:
+The dashboards taken from upstream are changed for single-cluster
+deployments:
 
-1. **Removed cluster variable requirement** - Dashboards work without the `cluster` label
-2. **Simplified queries** - Removed `cluster="$cluster"` filters
-3. **Thinkube-specific customizations** - Adapted for Thinkube service names and labels
+1. **Removed cluster variable** - no dashboard defines the `cluster`
+   variable.
+2. **Simplified queries** - the `cluster="$cluster"` filters are removed
+   from the queries. Five Kubernetes dashboards (API Server, Controller
+   Manager, Kubelet, Proxy, Scheduler) still carry `cluster=~"$cluster"`
+   in their queries.
 
 ## Directory Structure
 
@@ -59,33 +83,42 @@ dashboards/
     ├── alertmanager/        # AlertManager dashboards
     ├── applications/        # Application-specific dashboards
     └── gpu/                 # GPU monitoring dashboards
+scripts/                     # remove-cluster-variable.sh
+source-grafana/              # Grafana JSON the NGINX and DCGM dashboards come from
 ```
-
-## Usage with Thinkube
-
-These dashboards are imported when Perses is installed from the Optional Components page in thinkube-control. The Perses playbook in the thinkube repository, `ansible/40_thinkube/optional/perses/14_import_dashboards_percli.yaml`, clones this repository and imports every dashboard folder with `percli apply`.
 
 ## Dashboard Sources
 
 - **Kubernetes, Node Exporter, Prometheus, AlertManager**: Modified from [perses/community-dashboards](https://github.com/perses/community-dashboards)
 - **NGINX Ingress**: Custom dashboard created for Thinkube (based on NGINX Ingress Controller metrics)
-- **NVIDIA DCGM**: Migrated from [Grafana Dashboard 12239](https://grafana.com/grafana/dashboards/12239)
+- **NVIDIA DCGM**: Migrated from [Grafana Dashboard 12239](https://grafana.com/grafana/dashboards/12239) (source: [NVIDIA dcgm-exporter](https://github.com/NVIDIA/dcgm-exporter/blob/main/grafana/dcgm-exporter-dashboard.json))
 
-## Contributing
+[NOTICE](NOTICE) records where each dashboard came from and what was
+changed.
+
+## Working on it
 
 To add or modify dashboards:
 
 1. Edit dashboard YAML files in `dashboards/perses/`
-2. Test with `percli apply -f <dashboard.yaml>`
+2. Test with `percli apply -f <dashboard.yaml>` against a Perses server
 3. Commit changes
 4. Push to repository
 
+A new category folder is imported only after it is added to
+`dashboard_categories` in `14_import_dashboards_percli.yaml`.
+
+### Maintenance
+
+When the upstream Perses community dashboards are updated, review and
+selectively merge improvements while keeping single-cluster compatibility.
+
 ## License
 
-- Community dashboards: Apache-2.0 (from upstream Perses project)
-- Thinkube modifications: Apache-2.0
-- Grafana migrations: Check original dashboard licenses
+Apache License 2.0. See [LICENSE](LICENSE).
 
-## Maintenance
-
-This collection is maintained as part of the Thinkube project. When the upstream Perses community dashboards are updated, review and selectively merge improvements while maintaining single-cluster compatibility.
+- Community dashboards: Apache-2.0, Copyright 2024 The Perses Authors
+  (from upstream Perses project)
+- Thinkube modifications and the NGINX Ingress dashboard: Apache-2.0
+- The NVIDIA DCGM dashboard, migrated from Grafana: its upstream copyright
+  and licence apply. See [NOTICE](NOTICE).
