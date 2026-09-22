@@ -63,14 +63,7 @@ dashboards/
 
 ## Usage with Thinkube
 
-These dashboards are automatically deployed when you install Prometheus Operator and Perses using the Thinkube playbooks:
-
-```bash
-cd ~/thinkube
-./scripts/tk_ansible ansible/40_thinkube/optional/prometheus/00_install.yaml
-```
-
-The deployment playbook clones this repository and imports all dashboards using `percli`.
+These dashboards are imported when Perses is installed from the Optional Components page in thinkube-control. The Perses playbook in the thinkube repository, `ansible/40_thinkube/optional/perses/14_import_dashboards_percli.yaml`, clones this repository and imports every dashboard folder with `percli apply`.
 
 ## Dashboard Sources
 
