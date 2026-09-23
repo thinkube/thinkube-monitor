@@ -1,2 +1,3 @@
 # Local Claude Code and Tandem state
-.claude/ .tandem/
+.claude/
+.tandem/
