@@ -1,0 +1,11 @@
+# Dashboards this project did not write. NOTICE records where each came from
+# and what was changed; their upstream copyright and licence apply.
+
+# Derived from Perses Community Dashboards, Copyright 2024 The Perses Authors
+dashboards/perses/kubernetes/
+dashboards/perses/node-exporter/
+dashboards/perses/prometheus/
+dashboards/perses/alertmanager/
+
+# Migrated from NVIDIA's Grafana dashboard for dcgm-exporter
+dashboards/perses/gpu/

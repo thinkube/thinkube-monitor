@@ -1,0 +1,263 @@
+kind: Dashboard
+metadata:
+    name: Oxed_c6Wz
+    createdAt: 0001-01-01T00:00:00Z
+    updatedAt: 0001-01-01T00:00:00Z
+    version: 0
+spec:
+    display:
+        name: NVIDIA DCGM Exporter Dashboard
+    variables:
+        - kind: ListVariable
+          spec:
+            display:
+                name: Instance
+                hidden: false
+            allowAllValue: false
+            allowMultiple: true
+            sort: none
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: instance
+                    matchers:
+                        - DCGM_FI_DEV_GPU_TEMP
+            name: instance
+        - kind: ListVariable
+          spec:
+            display:
+                name: GPU
+                hidden: false
+            allowAllValue: true
+            allowMultiple: true
+            sort: alphabetical-asc
+            plugin:
+                kind: PrometheusLabelValuesVariable
+                spec:
+                    labelName: gpu
+                    matchers:
+                        - DCGM_FI_DEV_GPU_TEMP
+            name: gpu
+    panels:
+        "0":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Temperature
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "1":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Temperature (Current)
+                plugin:
+                    kind: StatChart
+                    spec:
+                        calculation: last
+                        format:
+                            unit: decimal
+                        valueFontSize: 30
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_GPU_TEMP{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "2":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Power Usage
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "3":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Power Usage (Current)
+                plugin:
+                    kind: StatChart
+                    spec:
+                        calculation: last
+                        format:
+                            unit: decimal
+                        valueFontSize: 30
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_POWER_USAGE{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "4":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU SM Clocks
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_SM_CLOCK{instance=~"${instance}", gpu=~"${gpu}"} * 1000000
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "5":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Utilization
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_GPU_UTIL{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "6":
+            kind: Panel
+            spec:
+                display:
+                    name: GPU Framebuffer Mem Used
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_DEV_FB_USED{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+        "7":
+            kind: Panel
+            spec:
+                display:
+                    name: Tensor Core Utilization
+                plugin:
+                    kind: TimeSeriesChart
+                    spec: {}
+                queries:
+                    - kind: TimeSeriesQuery
+                      spec:
+                        plugin:
+                            kind: PrometheusTimeSeriesQuery
+                            spec:
+                                datasource:
+                                    kind: PrometheusDatasource
+                                    name: prometheus-datasource
+                                minStep: ""
+                                query: DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{instance=~"${instance}", gpu=~"${gpu}"}
+                                seriesNameFormat: "{{Hostname}} GPU{{gpu}}"
+    layouts:
+        - kind: Grid
+          spec:
+            display:
+                title: GPU Metrics
+            items:
+                - x: 0
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/0'
+                - x: 12
+                  "y": 0
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/1'
+                - x: 0
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/2'
+                - x: 12
+                  "y": 6
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/3'
+                - x: 0
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/4'
+                - x: 12
+                  "y": 12
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/5'
+                - x: 0
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/6'
+                - x: 12
+                  "y": 18
+                  width: 12
+                  height: 6
+                  content:
+                    $ref: '#/spec/panels/7'
